@@ -41,7 +41,7 @@ module Warren
     end
 
     def pid_file
-      "e['MNESIA_NODE_BASE_DIR']}/#{e['node_name']}.pid"
+      "#{env['MNESIA_NODE_BASE_DIR']}/#{env['node_name']}.pid"
     end
 
     def apply_policies
