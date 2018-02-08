@@ -21,9 +21,9 @@ module Warren
   self.reset_config
 
   def self.configure
-    configuration = config.dup
+    configuration = @config.dup
     yield(configuration)
-    config = configuration.freeze
+    @config = configuration.freeze
   end
 
   def self.config_file(path)

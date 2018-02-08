@@ -1,8 +1,12 @@
+[![Version      ](https://img.shields.io/gem/v/warren.svg?maxAge=2592000)](https://rubygems.org/gems/warren)
+[![Build Status ](https://travis-ci.org/TwilightCoders/warren.svg)](https://travis-ci.org/TwilightCoders/warren)
+[![Code Climate ](https://api.codeclimate.com/v1/badges/762cdcd63990efa768b0/maintainability)](https://codeclimate.com/github/TwilightCoders/warren/maintainability)
+[![Test Coverage](https://codeclimate.com/github/TwilightCoders/warren/badges/coverage.svg)](https://codeclimate.com/github/TwilightCoders/warren/coverage)
+[![Dependencies ](https://gemnasium.com/badges/github.com/TwilightCoders/warren.svg)](https://gemnasium.com/github.com/TwilightCoders/warren)
+
 # Warren
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/warren`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Warren provides a clustering framework for RabbitMQ Nodes.
 
 ## Installation
 
@@ -32,12 +36,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/warren. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/TwilightCoders/warren. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Warren project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/warren/blob/master/CODE_OF_CONDUCT.md).

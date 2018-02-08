@@ -20,7 +20,7 @@ module Warren
       end
 
       def hostname
-        @hostname ||= `curl -s http://169.254.169.254/latest/meta-data/hostname`
+        @hostname ||= `curl -s http://169.254.169.254/latest/meta-data/hostname`.chomp
       end
 
     # protected

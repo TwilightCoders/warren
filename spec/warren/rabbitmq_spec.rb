@@ -11,4 +11,8 @@ RSpec.describe Warren::RabbitMQ do
 
   end
 
+  it 'Handle empty string for exception' do
+    expect{Warren::RabbitMQ::Exception.handle('Error:  ')}.to raise_error(Warren::RabbitMQ::Exception)
+  end
+
 end

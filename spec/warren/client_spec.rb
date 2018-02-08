@@ -28,4 +28,12 @@ RSpec.describe Warren::Client do
     end
   end
 
+    it 'hostname' do
+      allow_any_instance_of(Warren::Adapters::AWS).to receive(:hostname).and_return("foo.bar")
+
+      client = Warren::Client.new(adapter: Warren::Adapters::AWS.new('bla'))
+      expect(client.hostname).to eq("foo.bar")
+
+    end
+
 end

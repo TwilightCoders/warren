@@ -6,7 +6,6 @@ module Warren
     attr_reader :hostname, :node_name, :type, :cluster
     attr_reader :address # name@hostname
     attr_reader :adapter
-    attr_reader :env
 
     def initialize(adapter: , hostname: adapter.hostname, node_name: Warren.config.node_name, type: Node::TYPES.first)
       @node_name = node_name
@@ -17,15 +16,15 @@ module Warren
 
       setup_env
 
-      `hostname #{env['HOSTNAME']}`
-      `echo "127.0.0.1 #{env['HOSTNAME']}" >> /etc/hosts`
+      `hostname #{ENV['HOSTNAME']}`
+      `echo "127.0.0.1 #{ENV['HOSTNAME']}" >> /etc/hosts`
     end
 
     def setup_env
-      env.tap do |e|
+      ENV.tap do |e|
         e['RABBITMQ_USE_LONGNAME'] = 'true'
         e['HOSTNAME'] = hostname
-        e['RABBITMQ_NODENAME'] = node_name
+        e['RABBITMQ_NODENAME'] = address
         e['MNESIA_NODE_BASE_DIR'] = Warren.config.base_mnesia_dir
         e['RABBITMQ_LOG_BASE'] = Warren.config.log_base
 
@@ -36,12 +35,8 @@ module Warren
       end
     end
 
-    def env
-      @env ||= ENV.to_h
-    end
-
     def pid_file
-      "#{env['MNESIA_NODE_BASE_DIR']}/#{env['node_name']}.pid"
+      "#{ENV['MNESIA_NODE_BASE_DIR']}/#{ENV['node_name']}.pid"
     end
 
     def apply_policies
@@ -62,11 +57,9 @@ module Warren
       stop_app
 
       nodes.each do |node|
-        cluster_status = Node.status(address: node)
-
-        node_address = "#{Warren.config.node_name}@#{node}"
-
         begin
+          node_address = "#{Warren.config.node_name}@#{node}"
+          cluster_status = Node.status(address: node_address)
           response = RabbitMQ.ctl("-n #{@address} join_cluster #{node_address}", log: :info)
           cluster_name=(cluster) unless cluster.nil?
           return true
@@ -75,10 +68,13 @@ module Warren
           Warren.logger.info RabbitMQ.ctl("-n #{node_address} forget_cluster_node #{@address}", log: :info)
           sleep 5
           retry
-        rescue RabbitMQ::Exception => e
-          # Probably "Nodedown"
-          Warren.logger.error(e.message)
+        rescue RabbitMQ::Nodedown => e
+          Warren.logger.warn("Node down. Skipping...")
+          Warren.logger.warn(e.message)
+          # TODO: Clean up that node
           next
+        rescue RabbitMQ::Exception => e
+          Warren.logger.error(e.message)
         else
           break
         end

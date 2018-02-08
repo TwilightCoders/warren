@@ -7,9 +7,13 @@ module Warren
 
       def find_clusters
         fetch_nodes.inject(Hash.new) do |clusters, node|
-          if cluster_name = Node.cluster_name(address: "#{Warren.config.node_name}@#{node}")
+          begin
+            if cluster_name = Node.cluster_name(address: "#{Warren.config.node_name}@#{node}")
             (clusters[cluster_name] ||= Set.new).add(node)
+            end
+          rescue RabbitMQ::Nodedown => e
           end
+
           clusters
         end
       end
@@ -19,7 +23,7 @@ module Warren
       end
 
       def hostname
-        system 'hostname'
+        `hostname`.chomp
       end
 
     end

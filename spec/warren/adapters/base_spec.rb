@@ -35,6 +35,20 @@ RSpec.describe Warren::Adapters::Base do
   end
 
   context '#find_clusters' do
+    it "with a node that is down" do
+      allow(Warren::Node).to receive(:status).with(address: 'rabbit@ip-4-1.internal').and_call_original
+      allow(Warren::RabbitMQ).to receive(:exec_cmd).with('-n rabbit@ip-4-1.internal cluster_status', log: nil).and_return("Error: unable to connect to node 'rabbit@ip-3-1.internal': nodedown")
+
+      allow(@adapter).to receive(:fetch_nodes).and_return([
+        'ip-1-1.internal',
+        'ip-2-1.internal',
+        'ip-4-1.internal'
+      ])
+
+      clusters = @adapter.find_clusters
+      expect(clusters.count).to eq(2)
+      expect(clusters).to include('rabbit@ip-1-1.internal')
+    end
 
     it "doesn't include nil clusters" do
       allow(@adapter).to receive(:fetch_nodes).and_return([
