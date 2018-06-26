@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   # Adapter Dependencies
   spec.add_runtime_dependency 'aws-sdk-core', '~> 3'
   spec.add_runtime_dependency 'aws-sdk-ec2', '~> 1'
-  spec.add_runtime_dependency 'aws-sdk-ecs', '~> 1'
+  spec.add_runtime_dependency 'aws-sdk-ecs', '1.15.0'
 
   spec.add_development_dependency 'pry-byebug', '~> 3'
   spec.add_development_dependency 'bundler', '~> 1.3'
